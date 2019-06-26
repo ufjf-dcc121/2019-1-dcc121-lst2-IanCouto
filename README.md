@@ -5,6 +5,3 @@ Nome: Ian Couto de Paula
 Matrícula: 201876002
 
 Curso: Sistemas de Informação
-List 2.1:
-
-List 2.2:
