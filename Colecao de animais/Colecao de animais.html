@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Coleção de animas</title>
+    
+    <style>
+        form>table{
+            padding: 0.5em;
+            border: 0.3em solid;
+            margin: 0.5em;
+            font-weight: bold;
+        }
+        .formulario input{
+            width: 100%;
+        }
+        .botao{
+            width: 100%;
+            font-weight: bold;
+        }
+        .animais{
+            margin-left: 0.5em;
+            width: 299px;
+            border: solid;
+        }
+        .animais td{
+            border: 0.2em solid;
+            text-align: center;
+            padding: 0.2em;
+        }
+        thead,tfoot{
+            font-weight: bold;
+        }
+        
+        body{
+            background-image: url("dog-cat.png");
+            background-size: 50%;
+            background-repeat: no-repeat; 
+            background-position-x: 100%;
+            background-position-y: 400px;
+            color: rgb(168, 94, 25)
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <img src="compras.png" alt="">
+
+    <h1>Animais - Características e Curiosidades</h1>
+    
+    <form name="formulario">
+        <table>
+            <tr>
+                <strong><td>Animal:</td></strong> 
+                <td><input type="text" name="nome" min="0" required></td>
+            </tr>
+            <tr>
+                <td>Altura (metros): </td>
+                <td><input type="number" step="any"  name="altura" min="0" required></td>
+            </tr>
+            <tr>
+                <td>Peso (Kg): </td>
+                <td><input type="number" step="any" name="peso" min="0" required></td>
+            </tr>
+            <tr>
+                <td>Velocidade (Km/h): </td>
+                <td><input type="number" step="any"  name="velocidade" min="0" required></td>
+            </tr>
+            <tr>
+                <td>Idade Máxima (anos): </td>
+                <td><input type="number" step="any" name="idade_max" min="0" required></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input class="botao" type="submit" value="Inserir"></td>
+            </tr>
+        </table>
+    </form>
+    
+    <table class="animais"> 
+        <thead>
+            <tr>
+                <td>Animal</td>
+                <td>Altura (metros)</td>
+                <td>Peso (kg)</td>
+                <td>Velocidade (Km/h)</td>
+                <td>Idade Máxima (anos)</td>
+            </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+            <tr>
+                <td>Média:</td>
+                <td id="mAltura"></td>
+                <td id="mPeso"></td>
+                <td id="mVelocidade"></td>
+                <td id="mIdademMax"></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <ol type="i">
+        <strong><li>Mais alto: <span id="alto"></span></li></strong>
+        <strong><li>Mais pesado: <span id="pesado"></span></li></strong>
+        <strong><li>Mais veloz: <span id="veloz"></span></li></strong>
+        <strong><li>Mais longevo: <span id="longevo"></span></li> </strong>  
+    </ol>
+
+    <strong><p>Animas acima da média do peso: <span id="acima"></span></p></strong>
+</body>
+
+
+<script>
+    document.forms.formulario.addEventListener("submit",addAnimal);
+    vetorDeDados = [];
+    var mAltura = 0;
+    var mPeso = 0;
+    var mVelocidade = 0;
+    var mIdademMax = 0;
+    var totalDeAnimais = 0;
+   
+    function addAnimal(e){
+        e.preventDefault();
+
+        var nome = document.forms.formulario.nome.value;
+        var altura = document.forms.formulario.altura.value;
+        var peso = document.forms.formulario.peso.value;
+        var velocidade = document.forms.formulario.velocidade.value;
+        var idade_max = document.forms.formulario.idade_max.value;
+
+        var tbody = document.getElementsByTagName("tbody")[1];
+        var tdAltura = document.getElementById("mAltura");
+        var tdPeso = document.getElementById("mPeso");
+        var tdVelocidade = document.getElementById("mVelocidade");
+        var tdIdademMax = document.getElementById("mIdademMax");
+
+        salto = document.getElementById("alto");
+        spesado = document.getElementById("pesado");
+        sveloz = document.getElementById("veloz");
+        slongevo = document.getElementById("longevo");
+
+        novoTr = document.createElement("tr");
+        novoTdNome = document.createElement("td");
+        novoTdAltura = document.createElement("td");
+        novoTdPeso = document.createElement("td");
+        novoTdVelocidade = document.createElement("td");
+        novoTdIdademMax = document.createElement("td");
+
+        novoTdNome.innerText = nome;
+        novoTdAltura.innerText = altura;
+        novoTdPeso.innerText = peso;
+        novoTdVelocidade.innerText = velocidade; 
+        novoTdIdademMax.innerText = idade_max;
+
+        novoTr.appendChild(novoTdNome);
+        novoTr.appendChild(novoTdAltura);
+        novoTr.appendChild(novoTdPeso);
+        novoTr.appendChild(novoTdVelocidade);
+        novoTr.appendChild(novoTdIdademMax);
+        tbody.appendChild(novoTr);
+
+        vetorDeDados.push({nome:nome,altura:altura,peso:peso,velocidade:velocidade,idade_max:idade_max});
+        var alto=0,pesado=0,veloz=0,longevo=0;
+        for (var i = 0; i < vetorDeDados.length; i++) {
+            mAltura += Number(vetorDeDados[i].altura);
+            mPeso += Number(vetorDeDados[i].peso);
+            mVelocidade += Number(vetorDeDados[i].velocidade);
+            mIdademMax += Number(vetorDeDados[i].idade_max);
+            if(vetorDeDados[i].altura>vetorDeDados[alto].altura) alto=i;
+            if(vetorDeDados[i].peso>vetorDeDados[pesado].peso) pesado=i;
+            if(vetorDeDados[i].velocidade>vetorDeDados[veloz].velocidade) veloz=i;
+            if(vetorDeDados[i].idade_max>vetorDeDados[longevo].idade_max) longevo=i;
+        }
+
+        tdAltura.innerText = mAltura/vetorDeDados.length;
+        tdPeso.innerText = mPeso/vetorDeDados.length;
+        tdVelocidade.innerText = mVelocidade/vetorDeDados.length;
+        tdIdademMax.innerText = mIdademMax/vetorDeDados.length;
+        
+        salto.innerText = vetorDeDados[alto].nome;
+        spesado.innerText = vetorDeDados[pesado].nome;
+        sveloz.innerText = vetorDeDados[veloz].nome;
+        slongevo.innerText = vetorDeDados[longevo].nome;
+
+        var mediaDoPeso = mPeso/vetorDeDados.length;
+        var nAnimais=0;
+        var sAcima = document.getElementById("acima");
+        for (var i = 0; i < vetorDeDados.length; i++) {
+            if(vetorDeDados[i].peso>mediaDoPeso) nAnimais++;
+        }
+        sAcima.innerText = nAnimais;
+
+    }
+</script>
+
+</html>
