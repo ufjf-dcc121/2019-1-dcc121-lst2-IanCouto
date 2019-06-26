@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Excursão</title>
+    <style>
+        input.dados{
+            width: 100%;
+        }
+        .botoes{
+            text-align:right;
+        }    
+        table{
+            padding: 0.5em;
+            border: 0.4em solid;
+            margin: 0.5em;
+        }
+        div{
+            margin-left: 0.5em;
+            width: 229px;
+            border: 0.4em solid;
+        }
+        p{
+            padding-left: 0.5em;
+            font-weight: bold;
+        }
+        body{
+            background-image: url("onibus.png");
+            background-size: 50%;
+            background-repeat: no-repeat; 
+            background-position-x: 100%;
+            background-position-y: 200px;
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <h1>Participantes da Excursão</h1>
+    <form name="cadastro">
+        <table>
+            <tr>
+                <td>Nome: </td>
+                <td><input class="dados" type="text" name="nome" placeholder="Digite o nome aqui:" required></td>
+            </tr>
+            <tr>
+                <td>Idade: </td>
+                <td><input class="dados" type="number" name="idade" placeholder="Digite a idade aqui:" min="0" required></td>
+            </tr>
+            <tr>
+                <td class="botoes"  colspan="2">
+                    <input type="button" value="Excluir" name="excluir" >
+                    <input type="submit" value="Inscrever" name="inscrever" >
+                </td>
+            </tr>
+        </table>    
+    </form>
+    
+    <div>
+        <p>Adultos:</p>
+        <ul id="adultos"></ul>
+        <p>Estudantes:</p>
+        <ul id="estudantes"></ul>
+    </div>  
+
+    <script>
+        //Referencias
+        var formulario = document.forms.cadastro;
+        var listaAdultos = document.getElementById("adultos");
+        var listaEstudantes = document.getElementById("estudantes");
+        var btnExcluir = document.forms.cadastro.excluir;
+        var btnInscrever = document.forms.cadastro.inscrever;
+        
+        btnExcluir.style.display = "none";
+        btnExcluir.addEventListener("click",excluir);
+        formulario.addEventListener("submit",addAtualizarParticipante);
+        var atualizando = 0;
+        var idUl;
+        function addAtualizarParticipante(e){
+            e.preventDefault();
+            //Adicionando novo participante
+            if(!atualizando){ //Só é possivel adicionar outro participante caso outro nao esteja sendo editado
+                var vNome = document.forms.cadastro.nome.value;
+                var vIdade = document.forms.cadastro.idade.value;
+                if(vIdade>17){
+                    var novoLi = document.createElement("li");
+                    novoLi.innerHTML = "<span class='sNome'>"+vNome+"</span> - <span class='sIdade'>"+vIdade+"</span>";
+                    novoLi.addEventListener("click",editar);
+                    listaAdultos.appendChild(novoLi); 
+                } 
+                else {
+                    var novoLi = document.createElement("li");
+                    novoLi.innerHTML = "<span class='sNome'>"+vNome+"</span> - <span class='sIdade'>"+vIdade+"</span>";
+                    novoLi.addEventListener("click",editar);
+                    listaEstudantes.appendChild(novoLi); 
+                    
+                }
+                formulario.reset();
+                formulario.nome.focus();
+            }
+            //Atualizando participante
+            else{
+                var listaDeLi = idUl.getElementsByTagName("li");
+                for (var i = 0; i < listaDeLi.length; i++) {
+                    if(listaDeLi[i].style.color == "red") { //verifica qual elemento esta vermelho, pois é ele que será editado
+                        var vNome = document.forms.cadastro.nome.value;
+                        var vIdade = document.forms.cadastro.idade.value;
+                        listaDeLi[i].innerHTML = "<span class='sNome'>"+vNome+"</span> - <span class='sIdade'>"+vIdade+"</span>";
+                        //resetando
+                        document.forms.cadastro.idade.min="0";
+                        document.forms.cadastro.idade.max="";
+                        atualizando = 0;
+                        listaDeLi[i].style.color = "black";
+                        btnExcluir.style.display = "none";
+                        btnInscrever.value = "Inscrever";
+                        break;
+                    }
+                }
+                formulario.reset();
+                formulario.nome.focus();
+            }
+            
+        }
+        
+        function editar(){
+            if(!atualizando){ //Só é possivel editar caso outro elemento nao esteja sendo editado
+                //colocando os valores nos campos para atualização
+                document.forms.cadastro.nome.value=this.getElementsByClassName("sNome")[0].innerText;
+                document.forms.cadastro.idade.value=Number(this.getElementsByClassName("sIdade")[0].innerText);
+                this.style.color="red";
+                btnExcluir.style.display = "inline";
+                idUl = this.parentElement
+                
+                if(idUl.id=="adultos") document.forms.cadastro.idade.min=18;
+                else document.forms.cadastro.idade.max=17;
+                btnInscrever.value = "Atualizar";
+                atualizando = 1;
+            }
+            
+        }
+        function excluir(){
+            var listaDeLi = idUl.getElementsByTagName("li");
+            for (var i = 0; i < listaDeLi.length; i++) {
+                if(listaDeLi[i].style.color == "red") idUl.removeChild(listaDeLi[i]);
+            }
+            btnExcluir.style.display = "none";
+            atualizando = 0;
+            document.forms.cadastro.idade.min="0";
+            document.forms.cadastro.idade.max="";
+            btnInscrever.value = "Inscrever";
+            formulario.reset();
+            formulario.nome.focus();
+        }
+    </script>
+
+</body>
+</html>     
