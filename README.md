@@ -6,4 +6,4 @@ Matrícula: 201876002
 
 Curso: Sistemas de Informação
 Lst1:
-1- https://github.com/ufjf-dcc121/2019-1-dcc121-lst2-IanCouto/blob/master/Lista%20de%20Compras/Lista%20de%20Compras.html
+<p>1 - <a href="https://IanCouto.github.io/dcc121-2019-1-lst2/listaDeCompras.html">https://IanCouto.github.io/dcc121-2019-1-lst2/listaDeCompras.html</a></p>
