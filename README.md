@@ -14,7 +14,7 @@ Lista 2.1:
 
 <p>3 - : <a href="https://ufjf-dcc121.github.io/2019-1-dcc121-lst2-IanCouto/Excursão/Excursão.html">Excursão</a></p>
 
-Lista 2.2:
+Lista 2.2: 
 
 <p>1 - : <a href="https://ufjf-dcc121.github.io/2019-1-dcc121-lst2-IanCouto/Colecao de animais/Colecao de animais.html">Animais e suas curiosidades</a></p>
 
